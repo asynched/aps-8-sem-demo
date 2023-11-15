@@ -5,7 +5,6 @@ import { coordinate } from '@/services/coordinate'
 import { db } from '@/db/client'
 import { reports } from '@/db/schemas/report'
 import { object, number, union, literal } from 'zod'
-import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 const createReportSchema = object({
@@ -27,41 +26,55 @@ const createReportSchema = object({
 })
 
 export async function createReport(_: any, form: FormData) {
-  const data = {
-    latitude: Number(form.get('latitude')),
-    longitude: Number(form.get('longitude')),
-    severity: form.get('severity'),
-  }
+  try {
+    const data = {
+      latitude: Number(form.get('latitude')),
+      longitude: Number(form.get('longitude')),
+      severity: form.get('severity'),
+    }
 
-  const result = createReportSchema.safeParse(data)
+    const result = createReportSchema.safeParse(data)
 
-  if (!result.success) {
+    if (!result.success) {
+      return {
+        errors: result.error.flatten().fieldErrors,
+      }
+    }
+
+    const { latitude, longitude, severity } = result.data
+    const ip = headers().get('x-forwarded-for') || 'unknown'
+
+    const { address } = await coordinate.getLocationFromCoordinates({
+      latitude,
+      longitude,
+    })
+
+    console.log(address)
+
+    await db.insert(reports).values({
+      latitude,
+      longitude,
+      severity,
+      ip,
+      city: address.city || address.town || 'desconhecido',
+      country: address.country,
+      state: address.state,
+      suburb:
+        address.suburb ||
+        address.neighbourhood ||
+        address.road ||
+        'desconhecido',
+    })
+  } catch (err) {
+    console.error(err)
+
     return {
-      errors: result.error.flatten().fieldErrors,
+      error: {
+        message: 'Não foi possível criar o report',
+        code: (err as Error)?.message || 'unknown',
+      },
     }
   }
 
-  const { latitude, longitude, severity } = result.data
-  const ip = headers().get('x-forwarded-for') || 'unknown'
-
-  const { address } = await coordinate.getLocationFromCoordinates({
-    latitude,
-    longitude,
-  })
-
-  console.log(address)
-
-  await db.insert(reports).values({
-    latitude,
-    longitude,
-    severity,
-    ip,
-    city: address.city || address.town,
-    country: address.country,
-    state: address.state,
-    suburb: address.suburb,
-  })
-
-  revalidatePath('/')
   redirect('/')
 }

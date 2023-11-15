@@ -2,11 +2,13 @@ export type Location = {
   type: string
   display_name: string
   address: {
-    city: string
-    town: string
+    city?: string
+    town?: string
     country: string
     state: string
-    suburb: string
+    suburb?: string
+    neighbourhood?: string
+    road?: string
   }
 }
 

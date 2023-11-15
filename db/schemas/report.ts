@@ -1,7 +1,7 @@
 import { sql } from 'drizzle-orm'
 import {
   mysqlTable,
-  real,
+  float,
   varchar,
   serial,
   index,
@@ -12,8 +12,8 @@ export const reports = mysqlTable(
   'reports',
   {
     reportId: serial('report_id').primaryKey().notNull(),
-    latitude: real('latitude').notNull(),
-    longitude: real('longitude').notNull(),
+    latitude: float('latitude').notNull(),
+    longitude: float('longitude').notNull(),
     ip: varchar('ip', { length: 255 }).notNull(),
     severity: varchar('severity', {
       length: 6,

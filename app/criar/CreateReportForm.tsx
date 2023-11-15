@@ -84,6 +84,11 @@ export function CreateReportForm() {
       <button className="py-2 px-4 text-white bg-blue-600 rounded disabled:bg-opacity-50 disabled:cursor-not-allowed">
         Salvar
       </button>
+      {state?.error && (
+        <span className="text-center text-sm text-red-600">
+          Erro ao criar report: {state.error.message}
+        </span>
+      )}
     </form>
   )
 }
