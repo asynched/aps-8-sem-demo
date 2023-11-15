@@ -3,9 +3,8 @@ import type { Config } from 'drizzle-kit'
 export default {
   schema: 'db/schemas',
   out: 'drizzle',
-  driver: 'better-sqlite',
-
+  driver: 'mysql2',
   dbCredentials: {
-    url: 'dev.sqlite3',
+    uri: process.env.DB_URL!,
   },
 } satisfies Config

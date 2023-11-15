@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
+    "@libsql/client": "^0.3.6",
     "better-sqlite3": "^9.1.1",
     "drizzle-orm": "^0.29.0",
     "leaflet": "^1.9.4",
+    "mysql2": "^3.6.3",
     "next": "14.0.2",
     "react": "^18",
     "react-dom": "^18",

@@ -1,7 +1,7 @@
 {
   "version": "5",
-  "dialect": "sqlite",
-  "id": "d6ace309-93b7-4a70-b200-deb40d774cb8",
+  "dialect": "mysql",
+  "id": "a0712cab-f0e5-41cb-b6b7-89d010b6905b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "reports": {
@@ -9,8 +9,8 @@
       "columns": {
         "report_id": {
           "name": "report_id",
-          "type": "integer",
-          "primaryKey": true,
+          "type": "serial",
+          "primaryKey": false,
           "notNull": true,
           "autoincrement": true
         },
@@ -30,52 +30,53 @@
         },
         "ip": {
           "name": "ip",
-          "type": "text",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "severity": {
           "name": "severity",
-          "type": "text",
+          "type": "varchar(6)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "city": {
           "name": "city",
-          "type": "text",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "country": {
           "name": "country",
-          "type": "text",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "state": {
           "name": "state",
-          "type": "text",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "suburb": {
           "name": "suburb",
-          "type": "text",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "created_at": {
           "name": "created_at",
-          "type": "integer",
+          "type": "datetime",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "now()"
         }
       },
       "indexes": {
@@ -102,11 +103,18 @@
         }
       },
       "foreignKeys": {},
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "reports_report_id": {
+          "name": "reports_report_id",
+          "columns": [
+            "report_id"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     }
   },
-  "enums": {},
+  "schemas": {},
   "_meta": {
     "schemas": {},
     "tables": {},

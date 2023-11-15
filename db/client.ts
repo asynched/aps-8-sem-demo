@@ -1,8 +1,10 @@
-import Database from 'better-sqlite3'
-import { drizzle } from 'drizzle-orm/better-sqlite3'
+import { drizzle } from 'drizzle-orm/mysql2'
+import { createPool } from 'mysql2'
 
-const sqlite = new Database('dev.sqlite3')
+const mysql = createPool({
+  uri: process.env.DB_URL!,
+})
 
-export const db = drizzle(sqlite, {
+export const db = drizzle(mysql, {
   logger: true,
 })

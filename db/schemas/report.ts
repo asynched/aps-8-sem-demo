@@ -1,32 +1,33 @@
+import { sql } from 'drizzle-orm'
 import {
-  sqliteTable,
-  integer,
+  mysqlTable,
   real,
-  text,
+  varchar,
+  serial,
   index,
-} from 'drizzle-orm/sqlite-core'
+  datetime,
+} from 'drizzle-orm/mysql-core'
 
-export const reports = sqliteTable(
+export const reports = mysqlTable(
   'reports',
   {
-    reportId: integer('report_id')
-      .primaryKey({ autoIncrement: true })
-      .notNull(),
+    reportId: serial('report_id').primaryKey().notNull(),
     latitude: real('latitude').notNull(),
     longitude: real('longitude').notNull(),
-    ip: text('ip').notNull(),
-    severity: text('severity', {
+    ip: varchar('ip', { length: 255 }).notNull(),
+    severity: varchar('severity', {
+      length: 6,
       enum: ['low', 'medium', 'high'],
     }).notNull(),
-    city: text('city').notNull(),
-    country: text('country').notNull(),
-    state: text('state').notNull(),
-    suburb: text('suburb').notNull(),
-    createdAt: integer('created_at', {
-      mode: 'timestamp',
+    city: varchar('city', { length: 255 }).notNull(),
+    country: varchar('country', { length: 255 }).notNull(),
+    state: varchar('state', { length: 255 }).notNull(),
+    suburb: varchar('suburb', { length: 255 }).notNull(),
+    createdAt: datetime('created_at', {
+      mode: 'date',
     })
-      .notNull()
-      .$default(() => new Date()),
+      .default(sql`now()`)
+      .notNull(),
   },
   (table) => ({
     reportsCityIndex: index('reports_city_index').on(table.city),
