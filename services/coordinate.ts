@@ -3,6 +3,7 @@ export type Location = {
   display_name: string
   address: {
     city: string
+    town: string
     country: string
     state: string
     suburb: string

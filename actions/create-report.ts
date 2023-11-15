@@ -49,12 +49,14 @@ export async function createReport(_: any, form: FormData) {
     longitude,
   })
 
+  console.log(address)
+
   await db.insert(reports).values({
     latitude,
     longitude,
     severity,
     ip,
-    city: address.city,
+    city: address.city || address.town,
     country: address.country,
     state: address.state,
     suburb: address.suburb,
