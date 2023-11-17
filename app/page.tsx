@@ -41,7 +41,7 @@ export default async function Home() {
                 {entry.state} - {entry.country}
               </p>
               <p>
-                Transito:{' '}
+                Trânsito:{' '}
                 {entry.severity === 'low'
                   ? 'Baixo'
                   : entry.severity === 'medium'
