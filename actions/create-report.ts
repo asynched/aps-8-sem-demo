@@ -6,6 +6,7 @@ import { db } from '@/db/client'
 import { reports } from '@/db/schemas/report'
 import { object, number, union, literal } from 'zod'
 import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 
 const createReportSchema = object({
   latitude: number()
@@ -76,5 +77,6 @@ export async function createReport(_: any, form: FormData) {
     }
   }
 
+  revalidatePath('/')
   redirect('/')
 }

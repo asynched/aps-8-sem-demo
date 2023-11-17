@@ -1,9 +1,11 @@
 import Link from 'next/link'
-import { PlusIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
+import { PlusIcon } from '@heroicons/react/24/outline'
 import { db } from '@/db/client'
 import { reports } from '@/db/schemas/report'
-import { asc, desc } from 'drizzle-orm'
+import { desc } from 'drizzle-orm'
 import { formatCoordinates, getMapImageFromPosition } from '@/utils/geo'
+
+export const dynamic = 'force-dynamic'
 
 export default async function Home() {
   const entries = await db
